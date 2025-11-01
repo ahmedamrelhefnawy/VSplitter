@@ -1,6 +1,6 @@
-# FFMPEG Video Splitter
+# VSplitter
 
-A Python-based tool to automatically split video files into multiple clips using FFMPEG, configured through a JSON file.
+A python script used to automatically split video files into multiple clips using FFMPEG, configured through a JSON file.
 
 ## Prerequisites
 
