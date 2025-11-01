@@ -1,0 +1,22 @@
+{
+  "output_dir": "./output",
+  "source_files": [
+    {
+      "path": "/media/videos/lecture.mp4",
+      "clip_ranges": [
+        ["01 - Introduction", ["0:05:30"]],
+        ["02 - Main Topic", ["0:15:45", "0:45:20"]],
+        ["03 - Advanced Concepts", ["1:10:30"]],
+        ["04 - Q&A Session", ["1:30:00"]]
+      ]
+    },
+    {
+      "path": "/media/videos/workshop.mp4",
+      "clip_ranges": [
+        ["Part 1", ["0:00:00", "0:30:00"]],
+        ["Part 2", ["0:30:00", "1:00:00"]],
+        ["Part 3", ["1:00:00"]]
+      ]
+    }
+  ]
+}

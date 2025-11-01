@@ -1,0 +1,9 @@
+[project]
+name = "vsplitter"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12.7"
+dependencies = [
+    "python-ffmpeg>=2.0.12",
+]
