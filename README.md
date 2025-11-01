@@ -41,7 +41,7 @@ Download from [ffmpeg.org](https://ffmpeg.org/download.html) and add to PATH.
 3. Install dependencies:
 
 ```bash
-pip install python-ffmpeg pyyaml
+pip install python-ffmpeg
 ```
 
 Or if you're using uv or pip with pyproject.toml:
