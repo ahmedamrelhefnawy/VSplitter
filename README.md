@@ -5,9 +5,20 @@ A Python-based tool to automatically split video files into multiple clips using
 ## Prerequisites
 
 - Python 3.12.7 or higher
-- FFmpeg installed on your system
+- FFmpeg (automatically downloaded if not found)
 
-### Installing FFmpeg
+### FFmpeg Installation
+
+**Good news!** This tool will automatically download the appropriate FFmpeg binaries for your operating system if FFmpeg is not already installed. The first time you run the script, it will:
+
+1. Check if FFmpeg is installed on your system
+2. If not found, automatically download the correct version for your OS (Windows, Linux, or macOS)
+3. Extract and set up FFmpeg in a local `ffmpeg_bin` directory
+4. Use it for all video processing
+
+**Manual Installation (Optional):**
+
+If you prefer to install FFmpeg system-wide:
 
 **Linux (Ubuntu/Debian):**
 ```bash

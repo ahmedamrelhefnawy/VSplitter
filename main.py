@@ -3,6 +3,7 @@ import json
 from typing import List, Tuple
 import asyncio
 from ffmpeg.asyncio import FFmpeg
+from ffmpeg_setup import ensure_ffmpeg
 
 def fix_intervals(clip_ranges: List[Tuple[str, List[str]]]):
     '''Fixes the missing time stamps in intervals'''
@@ -25,11 +26,16 @@ def fix_intervals(clip_ranges: List[Tuple[str, List[str]]]):
 
     return clip_ranges
 
-async def build_clip(source_path: str, file_output_path: str, config: str):
+async def build_clip(source_path: str, file_output_path: str, config: dict):
     await FFmpeg().option('y').input(source_path).output(file_output_path, config).execute()
     print(f"{file_output_path.split('/')[-1]} was built sucessfully.")
     
 async def main():
+    # Ensure FFmpeg is available
+    print("Checking FFmpeg availability...")
+    ffmpeg_path = ensure_ffmpeg()
+    print(f"Using FFmpeg at: {ffmpeg_path}\n")
+    
     tasks = []
     
     # Read Config

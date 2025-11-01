@@ -1,0 +1,27 @@
+# FFmpeg binaries
+ffmpeg_bin/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+
+# Output files
+*.mp4
+*.avi
+*.mkv
+*.mov
+*.flv
+*.wmv
+
+# Configuration (if sensitive)
+# split_config.json
