@@ -200,3 +200,4 @@ This configuration will:
 - The tool uses FFmpeg's copy codec, which means no re-encoding occurs. This makes the splitting process very fast.
 - Output files are named exactly as specified in the configuration with the same file extension of the source video file.
 - If the output file already exists, it will be overwritten (`-y` flag)
+- Resulting clips may not be split exactly at the specified timestamps due to handling codec compression behavior, which may result in a few empty seconds at the beginning of clips.

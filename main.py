@@ -22,7 +22,7 @@ def fix_intervals(clip_ranges: List[Tuple[str, List[str]]]):
         # Handle single timestamp
         if len(interval) == 1:
             if i == 0:  # First interval
-                interval.insert(0, '00:00:00')
+                interval.insert(0, '0:00:00')
             elif i == len(clip_ranges)-1:  # Last interval
                 interval.append('')
             else:  # Interval in-between
@@ -33,8 +33,17 @@ def fix_intervals(clip_ranges: List[Tuple[str, List[str]]]):
     return clip_ranges
 
 async def build_clip(source_path: str, file_output_path: str, config: dict):
-    await FFmpeg().option('y').input(source_path).output(file_output_path, config).execute()
-    print(f"{file_output_path.split('/')[-1]} was built sucessfully.")
+    clip_name = file_output_path.split('/')[-1]
+    print("Building:", config['ss'], config['to'] if 'to' in config else 'to the end', '|',clip_name)
+    
+    ffmpeg = FFmpeg()
+    ffmpeg.option('y').option('ss', config['ss']).input(source_path).output(file_output_path, codec='copy')
+    
+    if 'to' in config:
+        ffmpeg.option('to', config['to'])
+        
+    await ffmpeg.execute()
+    print(f"{clip_name} was built sucessfully.")
     
 async def main():
     # Ensure FFmpeg is available
@@ -63,14 +72,13 @@ async def main():
         for name, interval in clip_ranges:
             assert 0 < len(interval) < 3, f'Incompatible interval length {len(interval)} -> {interval}, file: {name}'
 
-            config = {"codec:v": "copy", "codec:a": "copy"}
-
             # Building the final output path
             file_name = name+'.'+source_ext
             file_output_path = os.path.join(output_dir, file_name)
 
             start, end = interval
 
+            config = {}
             if start:
                 config['ss'] = start
             if end:
