@@ -6,7 +6,12 @@ from ffmpeg.asyncio import FFmpeg
 from ffmpeg_setup import ensure_ffmpeg
 
 def fix_intervals(clip_ranges: List[Tuple[str, List[str]]]):
-    '''Fixes the missing time stamps in intervals'''
+    '''Fixes the missing time stamps in intervals
+    
+    Handles:
+    - Single timestamp intervals
+    - Empty string timestamps ('') representing start/end of video
+    '''
     for i, split in enumerate(clip_ranges):
 
         assert len(split) == 2, f"Expected a list of length of 2 [Name: str, Interval: list[str]] as a split, got {len(split)}: {split}"
@@ -14,11 +19,12 @@ def fix_intervals(clip_ranges: List[Tuple[str, List[str]]]):
         name, interval = split
         assert 0 < len(interval) < 3, f'Conflict in interval {interval}, file: {name}'
 
+        # Handle single timestamp
         if len(interval) == 1:
             if i == 0:  # First interval
                 interval.insert(0, '00:00:00')
             elif i == len(clip_ranges)-1:  # Last interval
-                pass # Handled Later
+                interval.append('')
             else:  # Interval in-between
                 _, prev_interval = clip_ranges[i-1]
                 prev_end = prev_interval[-1]
@@ -54,8 +60,7 @@ async def main():
         # Fix missing time stamps
         clip_ranges = fix_intervals(clip_ranges)
 
-        for i, split in enumerate(clip_ranges):
-            name, interval = split
+        for name, interval in clip_ranges:
             assert 0 < len(interval) < 3, f'Incompatible interval length {len(interval)} -> {interval}, file: {name}'
 
             config = {"codec:v": "copy", "codec:a": "copy"}
@@ -64,13 +69,10 @@ async def main():
             file_name = name+'.'+source_ext
             file_output_path = os.path.join(output_dir, file_name)
 
-            if i == len(clip_ranges)-1 and len(interval) == 1: # The last split & only one time-stamp given
-                start = interval[0]
-                end = ''
-            else:
-                start, end = interval
+            start, end = interval
 
-            config['ss'] = start
+            if start:
+                config['ss'] = start
             if end:
                 config['to'] = end
 

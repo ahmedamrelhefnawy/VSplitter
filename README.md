@@ -94,6 +94,10 @@ Time stamps should be in the format: `H:MM:SS` or `HH:MM:SS`
 
 Examples: `"0:19:22"`, `"1:05:30"`, `"00:00:15"`
 
+**Special Case**: Use an empty string `""` to represent:
+- **Start of video** (when used as the first timestamp)
+- **End of video** (when used as the second timestamp)
+
 ## Time Stamp Rules
 
 ### Default Behavior
@@ -101,6 +105,19 @@ By default, you specify both the **start** and **end** time for each clip:
 ```json
 ["Clip Name", ["0:10:00", "0:20:00"]]
 ```
+
+### Empty String Timestamps
+Use empty strings `""` to explicitly reference the start or end of the video:
+
+```json
+["From Start", ["", "0:10:00"]],
+["Middle Section", ["0:15:00", "0:30:00"]],
+["To End", ["0:45:00", ""]]
+```
+
+- **From Start**: Beginning of video to 10 minutes
+- **Middle Section**: 15 minutes to 30 minutes
+- **To End**: 45 minutes to end of video
 
 ### Single Time Stamp Shortcuts
 If only **one** time stamp is provided, the behavior depends on the clip's position:
@@ -154,9 +171,9 @@ This extracts from 1 hour 45 minutes to the end of the video.
     {
       "path": "/media/videos/workshop.mp4",
       "clip_ranges": [
-        ["Part 1", ["0:00:00", "0:30:00"]],
+        ["Part 1", ["", "0:30:00"]],
         ["Part 2", ["0:30:00", "1:00:00"]],
-        ["Part 3", ["1:00:00"]]
+        ["Part 3", ["1:00:00", ""]]
       ]
     }
   ]
@@ -168,6 +185,7 @@ This configuration will:
 - Process two video files
 - Extract 4 clips from `lecture.mp4` and 3 clips from `workshop.mp4`
 - Name each output file according to the clip name (e.g., `01 - Introduction.mp4`)
+- Use empty strings (`""`) to reference video start/end in workshop.mp4 clips
 
 ## Features
 
